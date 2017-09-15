@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 import requests
+import time
 from requests.auth import HTTPBasicAuth
 
 # change these values
 google_maps_api_endpoint = "https://maps.googleapis.com/maps/api/directions/json?"
-google_maps_api_key = "xxxxxxxxxxxxxxxxxx"
+google_maps_api_key = "xxxxxxxxxxxx"
 domoticz_enpoint = "http://127.0.0.1:8080/json.htm?"
 domoticz_basicauth_username = 'username'
 domoticz_basicauth_password = 'password'
@@ -27,13 +28,14 @@ for sensor in domoticz_sensors:
   google_maps_api_query = {
     'origin': sensor['origin'],
     'destination': sensor['destination'],
-    'key': google_maps_api_key
+    'key': google_maps_api_key,
+    'departure_time': int(time.mktime(time.localtime()))
   }
   response = requests.get(google_maps_api_endpoint,  params=google_maps_api_query)
   if response.status_code == 200:
     data = response.json()
     if data['status'] == 'OK':
-      duration = data['routes'][0]['legs'][0]['duration']
+      duration = data['routes'][0]['legs'][0]['duration_in_traffic']
       summary = data['routes'][0]['summary']
       alert_level = 0
       if duration['value'] <= 1800:
