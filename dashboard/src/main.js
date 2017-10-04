@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueResource from 'vue-resource'
 Vue.use(VueResource);
 
-var domoticzEndpoint = 'http://augustyip.mynetgear.com:58080/json.htm?type=devices&rid=13'
+var domoticzEndpoint = 'http://augustyip.mynetgear.com:58080/json.htm?type=devices&filter=all&used=true&order=Name'
 var app = new Vue({
   el: '#app',
   data: {
